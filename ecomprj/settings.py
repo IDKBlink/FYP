@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     #Custom Apps
     'core',
-    #'userauths',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -176,6 +176,6 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
-#AUTH_USER_MODEL = 'userauths.User'
+AUTH_USER_MODEL = 'userauths.User'
 
 
