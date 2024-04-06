@@ -611,12 +611,17 @@
                     </div>
                 </div>
                 {% if messages %}
-                    {%  for message in messages %}
+                    {% for message in messages %}
                         <div class="alert alert-{{message.tags}}">
-                            <strong>success</strong>
+                            <strong>{{ message }}</strong>
                         </div>
-                    {% endfor %} 
+                    {% endfor %}
                 {% endif %}
+                <script>
+                    setTimeout (() => {
+                        $(".alert").alert("close");
+                    }, 3000)
+                </script>
             </div>
         </div>
     </header>
