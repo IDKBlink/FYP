@@ -94,7 +94,7 @@ class Product(models.Model):
     old_price = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="2.99")
     
     specifications = models.TextField(null=True, blank=True)
-    tags = models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True)
+    # tags = models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True)
 
     product_status = models.CharField(choices=STATUS, max_length=10, default="in_review")
 
@@ -131,5 +131,80 @@ class ProductImages(models.Model):
     class Meta:
         verbose_name_plural = "Product Images"
 
+############### Cart, Order, OrderItems and Address #################
 
+############### Cart, Order, OrderItems and Address #################
+
+############### Cart, Order, OrderItems and Address #################
+
+class CartOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="1.99")
+    paid_status = models.BooleanField(default=False, null=True, blank=True)
+    order_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default="processing")
+    sku = ShortUUIDField(null=True, blank=True, length=5, prefix="SKU", max_length=20, alphabet="abcdefgh12345")
+
+    class Meta:
+        verbose_name_plural = "Cart Order" 
+
+class CartOrderProducts(models.Model):
+    order = models.ForeignKey(CartOrder, on_delete=models.CASCADE)
+    invoice_no = models.CharField(max_length=200)
+    product_status = models.CharField(max_length=200)
+    item = models.CharField(max_length=200)
+    image = models.CharField(max_length=200)
+    qty = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="1.99")
+    total = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="1.99")
+
+    class Meta:
+        verbose_name_plural = "Cart Order Items"
+
+    def order_img(self):
+        return mark_safe('<img src="/media/%s" width="50" height="50" />' % (self.image))
+    
+############################################## Product Revew, wishlists, Address ##################################
+############################################## Product Revew, wishlists, Address ##################################
+############################################## Product Revew, wishlists, Address ##################################
+############################################## Product Revew, wishlists, Address ##################################
+
+
+class ProductReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name="reviews")
+    review = models.TextField()
+    rating = models.IntegerField(choices=RATING, default=None)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Product Reviews"
+
+    def __str__(self):
+        return self.product.title
+
+    def get_rating(self):
+        return self.rating
+
+
+class wishlist_model(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "wishlists"
+
+    def __str__(self):
+        return self.product.title
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    mobile = models.CharField(max_length=300, null=True)
+    address = models.CharField(max_length=100, null=True)
+    status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = "Address"
 
