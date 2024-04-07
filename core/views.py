@@ -1,8 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 
 def index(request):
-    return render(request, 'core/index.html')
+    #products = Product.objects.all().order_by("-id")
+    products = Product.objects.filter(product_status="published", featured=True)
+    context = {
+        "products": products,
+    }
+    return render(request, 'core/index.html', context)
 
 
 
