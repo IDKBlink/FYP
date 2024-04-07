@@ -12,3 +12,14 @@ def index(request):
 
 
 
+def category_list_view(request):
+    categories = Category.objects.all()
+
+    context = {
+        "categories":categories
+    }
+    return render(request, 'core/category-list.html', context)
+
+
+
+
