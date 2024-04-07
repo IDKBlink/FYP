@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+#from django.db.models import Count
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 
 def index(request):
@@ -11,10 +12,20 @@ def index(request):
     return render(request, 'core/index.html', context)
 
 
+def product_list_view(request):
+    products = Product.objects.filter(product_status="published")
+
+    context = {
+        "products":products,
+    }
+
+    return render(request, 'core/product-list.html', context)
+
 
 def category_list_view(request):
     categories = Category.objects.all()
-
+    #categories = Category.objects.all().annotate(product_count=Count('product'))
+    
     context = {
         "categories":categories
     }
