@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="row vendor-grid">
-                    {% for v in Vendors %}    
+                    {% for v in vendors %}    
                     <div class="col-lg-6 col-md-6 col-12 col-sm-6">
                         <div class="vendor-wrap style-2 mb-40">
                             <div class="product-badges product-badges-position product-badges-mrg">
@@ -87,17 +87,17 @@
                             <div class="vendor-img-action-wrap">
                                 <div class="vendor-img">
                                     <a href="vendor-details-1.html">
-                                        <img class="default-img" src="assets/imgs/vendor/vendor-1.png" alt="" />
+                                        <img class="default-img" src="{{v.image.url}}" alt="" />
                                     </a>
                                 </div>
                                 <div class="mt-10">
-                                    <span class="font-small total-product">380 products</span>
+                                    <span class="font-small total-product">{{v.product.all.count}} Products</span>
                                 </div>
                             </div>
                             <div class="vendor-content-wrap">
                                 <div class="mb-30">
                                     <div class="product-category">
-                                        <span class="text-muted">Since 2012</span>
+                                        <span class="text-muted">Since {{v.date}}</span>
                                     </div>
                                     <h4 class="mb-5"><a href="vendor-details-1.html">Nature Food</a></h4>
                                     <div class="product-rate-cover">
