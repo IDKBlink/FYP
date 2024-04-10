@@ -24,8 +24,6 @@ def product_list_view(request):
 
 def category_list_view(request):
     categories = Category.objects.all()
-    #categories = Category.objects.all().annotate(product_count=Count('product'))
-    
     context = {
         "categories":categories
     }
