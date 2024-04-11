@@ -1,6 +1,7 @@
 from django.contrib import admin
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 
+
 class ProductImagesAdmin(admin.TabularInline):
     model = ProductImages
 

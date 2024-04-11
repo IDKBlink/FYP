@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 #from django.db.models import Count
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
+
 
 def index(request):
     #products = Product.objects.all().order_by("-id")
@@ -57,3 +58,17 @@ def vendor_detail_view(request, vid):
     }
     return render(request, "core/vendor-detail.html", context)
 
+def product_detail_view(request, pid):
+    product = Product.objects.get(pid=pid)
+    #product = get_object_or_404(Product, pid=pid)
+
+    # Get related products images
+    p_image = product.p_images.all()
+
+    context = {
+        "p": product,
+        "p_image": p_image,
+        
+    }
+
+    return render(request, "core/product-detail.html", context)
