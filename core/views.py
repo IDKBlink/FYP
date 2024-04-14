@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.db.models import Count, Avg
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 from taggit.models import Tag
+from core.forms import ProductReviewForm
 
 def index(request):
     #products = Product.objects.all().order_by("-id")
@@ -69,6 +70,9 @@ def product_detail_view(request, pid):
     # Getting average review
     average_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
 
+     # Product Review form
+    review_form = ProductReviewForm()
+
     # Get related products images
     p_image = product.p_images.all()
 
@@ -76,6 +80,7 @@ def product_detail_view(request, pid):
         "p": product,
         "p_image": p_image,
         "average_rating": average_rating,
+        "review_form": review_form,
         "products": products,
         "reviews": reviews,
         
@@ -98,3 +103,7 @@ def tag_list(request, tag_slug=None):
     }
 
     return render(request, "core/tag.html", context)
+
+def ajax_add_review(request, pid):
+    product = Product.objects.get(pk=pid)
+    user = request.user 
