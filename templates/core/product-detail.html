@@ -278,8 +278,10 @@
                                                                                 <div class="d-flex align-items-center">
                                                                                     <span class="font-xs text-muted">{{r.date|date:"d M, Y"}} </span>
                                                                                 </div>
-                                                                                <div class="product-rate d-inline-block">
-                                                                                    <div class="product-rating" style="width: 100%"></div>
+                                                                                <div>
+                                                                                    {% for s in r.rating|ljust:r.rating %}
+                                                                                        <i class="fas fa-star text-warning"></i>
+                                                                                    {% endfor %}
                                                                                 </div>
                                                                             </div>
                                                                             <p class="mb-10">{{ r.review }}</p>
@@ -322,8 +324,10 @@
                                                     </div>
                                                 </div>
                                                 <!--comment form-->
+                                                {% if request.user.is_authenticated %}
+                                                {% if make_review %}
                                                 <div class="comment-form">
-                                                    <h4 class="mb-15">Add a review</h4>
+                                                    <h4 class="mb-15 add-review">Add a review</h4>
                                                     <strong class="text-success" id="review-res"> </strong>
                                                     <!-- <div class="product-rate d-inline-block mb-30"></div>-->
                                                     <div class="row">
@@ -367,6 +371,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {% endif %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
