@@ -185,4 +185,16 @@ AUTH_USER_MODEL = 'userauths.User'
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
-
+# CKEditor configuration
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        'codeSnippet_theme': 'monokai',  # The theme of the code snippet plugin
+        'toolbar': 'full',  # Use 'full' for a complete toolbar
+        'extraPlugins': ','.join([
+            'codesnippet',
+            'widget',
+            'dialog'
+        ]),
+    }
+}
