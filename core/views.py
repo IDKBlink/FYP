@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db.models import Count, Avg
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 from taggit.models import Tag
@@ -107,3 +107,26 @@ def tag_list(request, tag_slug=None):
 def ajax_add_review(request, pid):
     product = Product.objects.get(pk=pid)
     user = request.user 
+
+    review = ProductReview.objects.create(
+        user=user,
+        product=product,
+        review = request.POST['review'],
+        rating = request.POST['rating'],
+    )
+
+    context = {
+        'user': user.username,
+        'review': request.POST['review'],
+        'rating': request.POST['rating'],
+    }
+
+    average_reviews = ProductReview.objects.filter(product=product).aggregate(rating=Avg("rating"))
+
+    return JsonResponse(
+       {
+         'bool': True,
+        'context': context,
+        'average_reviews': average_reviews
+       }
+    )
