@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-#from django.db.models import Count
+from django.db.models import Count, Avg
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 from taggit.models import Tag
 
@@ -62,13 +62,22 @@ def product_detail_view(request, pid):
     product = Product.objects.get(pid=pid)
     #product = get_object_or_404(Product, pid=pid)
     products = Product.objects.filter(category=product.category).exclude(pid=pid)
+
+    # Getting all the review
+    reviews = ProductReview.objects.filter(product=product).order_by("-date")
+
+    # Getting average review
+    average_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+
     # Get related products images
     p_image = product.p_images.all()
 
     context = {
         "p": product,
         "p_image": p_image,
+        "average_rating": average_rating,
         "products": products,
+        "reviews": reviews,
         
     }
 
