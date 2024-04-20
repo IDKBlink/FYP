@@ -59,24 +59,61 @@ $("#commentForm").submit(function (e) {
 })
 
 
+// $(document).ready(function () {
+//     $(".filter-checkbox, #price-filter-btn").on("click", function () {
+//         console.log("A checkbox have been clicked");
+
+//         let filter_object = {}
+
+//         $(".filter-checkbox").each(function () {
+//             let filter_value = $(this).val()
+//             let filter_key = $(this).data("filter") // vendor, category
+
+//             // console.log("Filter value is:", filter_value);
+//             // console.log("Filter key is:", filter_key);
+
+//             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (element) {
+//                 return element.value
+//             })
+//         })
+//         console.log("Filter Object is: ", filter_object);
+//         $.ajax({
+//             url: '/filter-products',
+//             data: filter_object,
+//             dataType: 'json',
+//             beforeSend: function () {
+//                 console.log("Trying to filter product...");
+//             },
+//             success: function (response) {
+//                 console.log(response);
+//                 console.log("Data filtred successfully...");
+//                 $("#filtered-product").html(response.data)
+//             }
+//         })
+//     })
+// })
 $(document).ready(function () {
     $(".filter-checkbox, #price-filter-btn").on("click", function () {
-        console.log("A checkbox have been clicked");
+        console.log("A checkbox or the price filter button has been clicked");
 
-        let filter_object = {}
+        let filter_object = {};
 
         $(".filter-checkbox").each(function () {
-            let filter_value = $(this).val()
-            let filter_key = $(this).data("filter") // vendor, category
-
-            // console.log("Filter value is:", filter_value);
-            // console.log("Filter key is:", filter_key);
+            let filter_value = $(this).val();
+            let filter_key = $(this).data("filter"); // vendor, category
 
             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (element) {
-                return element.value
-            })
-        })
+                return element.value;
+            });
+        });
+
+        // Adding price filter to the filter object
+        let minPrice = $('#range').attr('min');
+        let maxPrice = $('#range').val();
+        filter_object['price'] = [minPrice, maxPrice];
+
         console.log("Filter Object is: ", filter_object);
+
         $.ajax({
             url: '/filter-products',
             data: filter_object,
@@ -86,40 +123,18 @@ $(document).ready(function () {
             },
             success: function (response) {
                 console.log(response);
-                console.log("Data filtred successfully...");
-                $("#filtered-product").html(response.data)
+                console.log("Data filtered successfully...");
+                $("#filtered-product").html(response.data);
             }
-        })
-    })
+        });
+    });
 
-    $("#max_price").on("blur", function () {
-        let min_price = $(this).attr("min")
-        let max_price = $(this).attr("max")
-        let current_price = $(this).val()
+    // Add event listener for input range change
+    $('#range').on('input', function () {
+        let minPrice = $('#range').attr('min');
+        let maxPrice = $('#range').val();
+        $('#slider-range-value1').text('$' + minPrice);
+        $('#slider-range-value2').text('$' + maxPrice);
+    });
+});
 
-        // console.log("Current Price is:", current_price);
-        // console.log("Max Price is:", max_price);
-        // console.log("Min Price is:", min_price);
-
-        if (current_price < parseInt(min_price) || current_price > parseInt(max_price)) {
-            // console.log("Price Error Occured");
-
-            min_price = Math.round(min_price * 100) / 100
-            max_price = Math.round(max_price * 100) / 100
-
-
-            // console.log("Max Price is:", min_Price);
-            // console.log("Min Price is:", max_Price);
-
-            alert("Price must between $" + min_price + ' and $' + max_price)
-            $(this).val(min_price)
-            $('#range').val(min_price)
-
-            $(this).focus()
-
-            return false
-
-        }
-
-    })
-})

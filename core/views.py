@@ -156,10 +156,13 @@ def filter_product(request):
     categories = request.GET.getlist("category[]")
     vendors = request.GET.getlist("vendor[]")
 
+
     products = Product.objects.filter(product_status="published").order_by("-id").distinct()
+
 
     if len(categories) > 0:
         products = products.filter(category__id__in=categories).distinct() 
+        
     if len(vendors) > 0:
         products = products.filter(vendor__id__in=vendors).distinct() 
 
