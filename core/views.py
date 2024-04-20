@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.db.models import Count, Avg
 from core.models import CartOrderProducts, Product, Category, Vendor, CartOrder, ProductImages, ProductReview, wishlist_model, Address
 from taggit.models import Tag
 from core.forms import ProductReviewForm
+from django.template.loader import  render_to_string
 
 def index(request):
     #products = Product.objects.all().order_by("-id")
@@ -150,3 +151,17 @@ def search_view(request):
         "query": query,
     }
     return render(request, "core/search.html", context)
+
+def filter_product(request):
+    categories = request.GET.getlist("category[]")
+    vendors = request.GET.getlist("vendor[]")
+
+    products = Product.objects.filter(product_status="published").order_by("-id").distinct()
+
+    if len(categories) > 0:
+        products = products.filter(category__id__in=categories).distinct() 
+    if len(vendors) > 0:
+        products = products.filter(vendor__id__in=vendors).distinct() 
+
+    data = render_to_string("core/async/product-list.html", {"products": products})
+    return JsonResponse({"data": data})
