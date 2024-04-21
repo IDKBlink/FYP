@@ -258,6 +258,10 @@ def checkout_view(request):
         "cart_total_amount": cart_total_amount
     })
 
+@login_required
+def customer_dashboard(request):
+    return render(request, 'core/dashboard.html')
+
 
 #login_required Whishlist
 @login_required
