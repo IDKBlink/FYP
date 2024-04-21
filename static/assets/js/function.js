@@ -275,6 +275,10 @@ $(document).ready(function () {
             },
             success: function (res) {
                 console.log("Sent Data to server!");
+                $(".contact_us_p").hide()
+                $("#contact-form-ajax").hide()
+                $("#message-response").html("Message sent successfully.")
+
             }
         })
     })
