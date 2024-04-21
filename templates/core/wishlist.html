@@ -34,29 +34,36 @@
                             </thead>
                             <tbody>
                                 {% for w in w %}
+                                {{w}}
+
                                 <tr class="pt-30">
                                     <td class="custome-checkbox pl-30">
                                         <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="" />
                                         <label class="form-check-label" for="exampleCheckbox1"></label>
                                     </td>
-                                    <td class="image product-thumbnail pt-40"><img src="{% static 'assets/imgs/shop/product-1-1.jpg' %}" alt="#" /></td>
+                                    <td class="image product-thumbnail pt-40"><img src="{{w.product.image.url}}" alt="#" /></td>
                                     <td class="product-des product-name">
-                                        <h6><a class="product-name mb-10" href="shop-product-right.html">Field Roast Chao Cheese Creamy Original</a></h6>
-                                        <div class="product-rate-cover">
-                                            <div class="product-rate d-inline-block">
-                                                <div class="product-rating" style="width: 90%"></div>
-                                            </div>
-                                            <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                        </div>
+                                        {% if w.product.pid %}
+                                            <h6><a class="product-name mb-10" href="{% url "core:product-detail" w.product.pid %}">{{ w.product.title|truncatechars:30 }}</a></h6>
+                                        {% else %}
+                                            <h6>{{ w.product.title|truncatechars:30 }}</h6>
+                                        {% endif %}
+
+                                        
                                     </td>
-                                    <td class="price" data-title="Price">
-                                        <h3 class="text-brand">$2.51</h3>
+                                    <td class="price d-fdlex fs-1" data-title="Price">
+                                        <span class="text-brand">Rs</span><span class="text-brand current-product-price-{{ w.product.id }}">{{ w.product.price }}</span>
                                     </td>
                                     <td class="text-center detail-info" data-title="Stock">
-                                        <span class="stock-status in-stock mb-0"> In Stock </span>
+                                        <span class="stock-status in-stock mb-0"> {% if w.product_in_stock %} In Stock {% else %} Out of stock {% endif %} </span>
                                     </td>
                                     <td class="text-right" data-title="Cart">
-                                        <button class="btn btn-sm">Add to cart</button>
+                                        <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{ w.product.id }}">
+                                        <input type="hidden" class="product-pid-{{ w.product.id }}" value="{{ w.product.pid }}">"
+                                        <input type="hidden" class="product-image-{{ w.product.id }}" value="{{ w.product.image.url }}">
+                                        <input type="hidden" class="product-id-{{ w.product.id }}" value="{{ w.product.id }}">
+                                        <input type="hidden" class="product-title-{{ w.product.id }}" value="{{ w.product.title }}">
+                                        <button class="btn btn-sm add-to-cart-btn" data-index="{{ w.product.id }}">Add to cart</button>
                                     </td>
                                     <td class="action text-center" data-title="Remove">
                                         <a href="#" class="text-body"><i class="fi-rs-trash"></i></a>

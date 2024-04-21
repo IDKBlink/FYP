@@ -256,10 +256,8 @@ def checkout_view(request):
 #login_required Whishlist
 
 def wishlist_view(request):
-    try:
-        wishlist = wishlist_model.objects.all()
-    except:
-        wishlist = None
+    wishlist = wishlist_model.objects.all()
+    
     context = {
         "w":wishlist
     }
