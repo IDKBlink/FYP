@@ -253,6 +253,18 @@ def checkout_view(request):
         return render(request, "core/checkout.html")
     return render(request, "core/checkout.html", {"cart_data":request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount':cart_total_amount})
 
+#login_required Whishlist
+
+def wishlist_view(request):
+    try:
+        wishlist = wishlist_model.objects.all()
+    except:
+        wishlist = None
+    context = {
+        "w":wishlist
+    }
+    return render(request, "core/wishlist.html", context)
+
 
 #Contact 
 def contact(request):
