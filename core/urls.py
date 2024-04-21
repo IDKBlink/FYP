@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart
+from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view
 
 app_name = "core"
 
@@ -33,4 +33,7 @@ urlpatterns = [
 
      # Add to cart URL
     path("add-to-cart/", add_to_cart, name="add-to-cart"),
+
+    # Cart Page URL
+    path("cart/", cart_view, name="cart"),
 ]

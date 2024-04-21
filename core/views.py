@@ -197,3 +197,6 @@ def add_to_cart(request):
         return JsonResponse({"data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
     else:
         return JsonResponse({"error": "Missing required parameters"})
+    
+def cart_view(request):
+     return render(request, "core/cart.html")
