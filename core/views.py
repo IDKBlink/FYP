@@ -216,7 +216,7 @@ def delete_item_from_cart(request):
             cart_data = request.session['cart_data_obj']
             del request.session['cart_data_obj'][product_id]
             request.session['cart_data_obj'] = cart_data
-
+    
     cart_total_amount = 0
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
