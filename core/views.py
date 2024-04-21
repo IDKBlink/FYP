@@ -172,26 +172,28 @@ def filter_product(request):
 def add_to_cart(request):
     cart_product = {}
 
-    cart_product[str(request.GET['id'])] = {
-        'title': request.GET['title'],
-        'qty': request.GET['qty'],
-        'price': request.GET['price'],
-        'image': request.GET['image'],
-        'pid': request.GET['pid'],
-    }
+    if 'id' in request.GET and 'title' in request.GET and 'qty' in request.GET and 'price' in request.GET:
+        cart_product[str(request.GET['id'])] = {
+            'title': request.GET['title'],
+            'qty': request.GET['qty'],
+            'price': request.GET['price'],
+            'image': request.GET.get('image', None),
+            'pid': request.GET.get('pid', None),
+        }
 
-    if 'cart_data_obj' in request.session:
-        if str(request.GET['id']) in request.session['cart_data_obj']:
-
-            cart_data = request.session['cart_data_obj']
-            cart_data[str(request.GET['id'])]['qty'] = int(cart_product[str(request.GET['id'])]['qty'])
-            cart_data.update(cart_data)
-            request.session['cart_data_obj'] = cart_data
+        if 'cart_data_obj' in request.session:
+            if str(request.GET['id']) in request.session['cart_data_obj']:
+                cart_data = request.session['cart_data_obj']
+                cart_data[str(request.GET['id'])]['qty'] = int(cart_product[str(request.GET['id'])]['qty'])
+                cart_data.update(cart_data)
+                request.session['cart_data_obj'] = cart_data
+            else:
+                cart_data = request.session['cart_data_obj']
+                cart_data.update(cart_product)
+                request.session['cart_data_obj'] = cart_data
         else:
-            cart_data = request.session['cart_data_obj']
-            cart_data.update(cart_product)
-            request.session['cart_data_obj'] = cart_data
+            request.session['cart_data_obj'] = cart_product
 
+        return JsonResponse({"data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
     else:
-        request.session['cart_data_obj'] = cart_product
-    return JsonResponse({"data":request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
+        return JsonResponse({"error": "Missing required parameters"})
