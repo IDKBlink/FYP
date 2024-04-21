@@ -218,7 +218,8 @@ $(document).ready(function () {
 
         let product_id = $(this).attr("data-product")
         let this_val = $(this)
-        let product_quantity = $(".product-qty"+product_id).val()
+        let product_quantity = $(".product-qty-"+product_id).val();
+
 
         console.log("PRoduct ID:", product_id);
         console.log("PRoduct QTY:", product_quantity);
@@ -258,7 +259,7 @@ $(document).ready(function () {
             },
             dataType: "json",
             beforeSend: function () {
-                console.log("Adding to wishlist...")           
+                console.log("Adding to wishlist...")
             },
             success: function (response) {
                 this_val.html("✓")

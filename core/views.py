@@ -7,6 +7,7 @@ from taggit.models import Tag
 from core.forms import ProductReviewForm
 from django.template.loader import  render_to_string
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     #products = Product.objects.all().order_by("-id")
@@ -246,15 +247,20 @@ def update_cart(request):
 
 def checkout_view(request):
     cart_total_amount = 0
-    # Checking if cart_data_obj session exists
-    if 'cart_data_obj' in request.session:
-        for p_id, item in request.session['cart_data_obj'].items():
-            cart_total_amount += int(item['qty']) * float(item['price'])
-        return render(request, "core/checkout.html")
-    return render(request, "core/checkout.html", {"cart_data":request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount':cart_total_amount})
+    cart_data = request.session.get('cart_data_obj', {})
+    
+    for p_id, item in cart_data.items():
+        cart_total_amount += int(item['qty']) * float(item['price'])
+    
+    return render(request, "core/checkout.html", {
+        "cart_data": cart_data,
+        "totalcartitems": len(cart_data),
+        "cart_total_amount": cart_total_amount
+    })
+
 
 #login_required Whishlist
-
+@login_required
 def wishlist_view(request):
     wishlist = wishlist_model.objects.all()
     
@@ -289,6 +295,7 @@ def add_to_wishlist(request):
 
 
 #Contact 
+@login_required
 def contact(request):
     return render(request, "core/contact.html")
 
