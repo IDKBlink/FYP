@@ -250,6 +250,24 @@ $(document).ready(function () {
         let this_val = $(this)
 
         console.log("PRoduct ID IS", product_id);
+
+        $.ajax({
+            url: "/add-to-wishlist",
+            data: {
+                "id": product_id
+            },
+            dataType: "json",
+            beforeSend: function () {
+                console.log("Adding to wishlist...")           
+            },
+            success: function (response) {
+                this_val.html("✓")
+                if (response.bool === true) {
+                    console.log("Added to wishlist...");
+                }
+            }
+
+        })
     })
 
 

@@ -263,6 +263,30 @@ def wishlist_view(request):
     }
     return render(request, "core/wishlist.html", context)
 
+def add_to_wishlist(request):
+    product_id = request.GET['id']
+    product = Product.objects.get(id=product_id)
+
+    context = {}
+
+    wishlist_count = wishlist_model.objects.filter(product=product, user=request.user).count()
+    print(wishlist_count)
+
+    if wishlist_count > 0:
+        context = {
+            "bool": True
+        }
+    else:
+        new_wishlist = wishlist_model.objects.create(
+            user=request.user,
+            product=product,
+        )
+        context = {
+            "bool": True
+        }
+
+    return JsonResponse(context)
+
 
 #Contact 
 def contact(request):

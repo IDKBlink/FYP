@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_item_from_cart, update_cart, checkout_view, contact, ajax_contact_form, wishlist_view
+from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_item_from_cart, update_cart, checkout_view, contact, ajax_contact_form, wishlist_view, add_to_wishlist
 
 app_name = "core"
 
@@ -48,6 +48,9 @@ urlpatterns = [
 
     # wishlist page
     path("wishlist/", wishlist_view, name="wishlist"),
+
+    # adding to wishlist
+    path("add-to-wishlist/", add_to_wishlist, name="add-to-wishlist"),
 
     path("contact/", contact, name="contact"),
 
