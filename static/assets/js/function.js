@@ -244,6 +244,16 @@ $(document).ready(function () {
 
     })
 
+    // Adding to wishlist
+    $(document).on("click", ".add-to-wishlist", function (){
+        let product_id = $(this).attr("data-product-item")
+        let this_val = $(this)
+
+        console.log("PRoduct ID IS", product_id);
+    })
+
+
+    //Adding Contact page
     $(document).on("submit", "#contact-form-ajax", function(e){
         e.preventDefault()
         console.log("Submited...");
