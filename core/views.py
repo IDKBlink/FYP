@@ -257,11 +257,18 @@ def checkout_view(request):
     
     for p_id, item in cart_data.items():
         cart_total_amount += int(item['qty']) * float(item['price'])
+
+    try:
+        active_address = Address.objects.get(user=request.user, status=True)
+    except:
+        messages.warning(request, "There are multiple addresses, only one should be activated.")
+        active_address = None
     
     return render(request, "core/checkout.html", {
         "cart_data": cart_data,
         "totalcartitems": len(cart_data),
-        "cart_total_amount": cart_total_amount
+        "cart_total_amount": cart_total_amount,
+        "active_address":active_address
     })
 
 @login_required
