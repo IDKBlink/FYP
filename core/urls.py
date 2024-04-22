@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_item_from_cart, update_cart, checkout_view, payment_completed_view, contact, ajax_contact_form, wishlist_view, add_to_wishlist, customer_dashboard, order_detail
+from core.views import index, category_list_view,  category_product_list__view, product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_item_from_cart, update_cart, checkout_view, payment_completed_view, contact, ajax_contact_form, wishlist_view, add_to_wishlist, customer_dashboard, order_detail, make_address_default
 
 app_name = "core"
 
@@ -55,6 +55,9 @@ urlpatterns = [
 
     # Order Detail URL
     path("dashboard/order/<int:id>", order_detail, name="order-detail"),
+
+    # Making address defauly
+    path("make-default-address/", make_address_default, name="make-default-address"),
 
     # wishlist page
     path("wishlist/", wishlist_view, name="wishlist"),
