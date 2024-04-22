@@ -259,6 +259,14 @@ def checkout_view(request):
     })
 
 @login_required
+def payment_completed_view(request):
+    return render(request, 'core/payment-completed.html')
+
+@login_required
+def payment_failed_view(request):
+    return render(request, 'core/payment-failed.html')
+
+@login_required
 def customer_dashboard(request):
     orders = CartOrder.objects.filter(user=request.user).order_by("-id")
     context = {
