@@ -271,6 +271,40 @@ def checkout_view(request):
         "active_address":active_address
     })
 
+def checkout(request):
+    # Get cart data from session
+    cart_data = request.session.get('cart_data_obj', {})
+    
+    # Calculate total price and update inventory
+    total_price = 0
+    for product_id, item in cart_data.items():
+        # Calculate total price for the item
+        total_price += float(item['price']) * int(item['qty'])
+
+    # Create a CartOrder instance
+    order = CartOrder.objects.create(
+        user=request.user,  # Assuming user is authenticated
+        price=total_price
+    )
+
+    # Create CartOrderProducts instances for each item in the cart
+    for product_id, item in cart_data.items():
+        CartOrderProducts.objects.create(
+            order=order,
+            invoice_no=order.sku,  # Assign the order's SKU as invoice number
+            product_status='pending',  # Set initial product status
+            item=item['title'],
+            image=item['image'],
+            qty=item['qty'],
+            price=item['price'],
+            total=float(item['price']) * int(item['qty'])
+        )
+
+    # Clear cart data from session after checkout
+    del request.session['cart_data_obj']
+    
+    return JsonResponse({"message": "Checkout successful", "total_price": total_price})
+
 @login_required
 def payment_completed_view(request):
     cart_total_amount = 0

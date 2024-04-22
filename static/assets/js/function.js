@@ -245,6 +245,25 @@ $(document).ready(function () {
 
     })
 
+    $(".checkout-btn").on("click", function(){
+        $.ajax({
+            url: '/checkout-items/',
+            dataType: 'json',
+            beforeSend: function(){
+                console.log("Initiating Checkout...");
+            },
+            success: function(data){
+                console.log("Checkout Successful");
+                // Handle success, e.g., redirect to thank you page
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.log("Error during checkout:", xhr.responseText);
+                // Handle error
+            }
+        });
+    });
+    
+
     // Making Default Address
     $(document).on("click", ".make-default-address", function (){
         let id = $(this).attr("data-address-id")
