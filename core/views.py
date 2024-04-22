@@ -7,6 +7,11 @@ from taggit.models import Tag
 from core.forms import ProductReviewForm
 from django.template.loader import  render_to_string
 from django.contrib import messages
+
+from django.urls import reverse
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -246,6 +251,7 @@ def update_cart(request):
     return JsonResponse({"data": context, 'totalcartitems': len(request.session['cart_data_obj'])})
 
 def checkout_view(request):
+
     cart_total_amount = 0
     cart_data = request.session.get('cart_data_obj', {})
     
@@ -260,17 +266,34 @@ def checkout_view(request):
 
 @login_required
 def payment_completed_view(request):
-    return render(request, 'core/payment-completed.html')
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+    return render(request, 'core/payment-completed.html',  {'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
 
-@login_required
-def payment_failed_view(request):
-    return render(request, 'core/payment-failed.html')
 
 @login_required
 def customer_dashboard(request):
     orders = CartOrder.objects.filter(user=request.user).order_by("-id")
+    address = Address.objects.filter(user=request.user)
+
+    if request.method == "POST":
+        address = request.POST.get("address")
+        mobile = request.POST.get("mobile")
+
+        new_address = Address.objects.create(
+            user=request.user,
+            address=address,
+            mobile=mobile,
+        )
+        messages.success(request, "Address Added Successfully.")
+        return redirect("core:dashboard")
+    
+
     context = {
-        "orders": orders
+        "orders": orders,
+        "address": address,
     }
     return render(request, 'core/dashboard.html')
 
