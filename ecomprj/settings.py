@@ -145,7 +145,7 @@ JAZZMIN_SETTINGS = {
     'site_header': "A1star Shop",
     'site_brand': "You order, we deliver",
     'site_logo': "assets/imgs/theme/logo.gif",
-    'copyright': "desphixs-shop.com",
+    'copyright': "A1starTradeconcern.com",
 }
 
 
