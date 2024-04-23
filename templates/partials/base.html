@@ -283,14 +283,12 @@
                                 <ul>
 
                                     <li>
-                                        <a class="active" href="index.html">Home <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="index.html">Home</a></li>
-                                        </ul>
+                                        <a class="active" href="http://127.0.0.1:8000/">Home </i></a>
+                                        
                                     </li>
                                     
                                     <li>
-                                        <a href="shop-grid-right.html">Category <i class="fi-rs-angle-down"></i></a>
+                                        <a href="{% url 'core:category-list' %}">Category <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             {% for c in categories %}
                                             <li><a href="{% url 'core:category-product-list' c.cid %}">{{c.title}}</a></li>
@@ -708,3 +706,4 @@
 </body>
 
 </html>
+
