@@ -167,50 +167,86 @@
                         <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.jpg' %}" alt="logo" /></a>
                     </div>
                     <div class="header-right"> 
-                        <div class="header-action-right">
-                            <div class="header-action-2">
-                                <div class="header-action-icon-2">
-                                    <a href="{% url 'core:wishlist' %}">
-                                        <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
-                                        <span class="pro-count blue">{{ wishlist.count }}</span>
-                                    </a>
-                                    <a href="{% url 'core:wishlist' %}"><span class="lable">Wishlist</span></a>
-                                </div>
-                                <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="{% url 'core:cart' %}">
-                                        <img alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
-                                        <span class="pro-count blue cart-items-count">{{ request.session.cart_data_obj|length }}</span>
-                                    </a>
-                                    <a href="shop-cart.html"><span class="lable">Cart</span></a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-button">
-                                                <a href="{% url 'core:cart' %}" class="outline">View cart</a>
-                                                <a href="{% url 'core:checkout' %}">Checkout</a>
+                        <div class="header-right">
+                            <div class="search-style-2">
+                                <form action="{% url 'core:search' %}" method="GET">
+                                    <select class="select-active">
+                                        <option>All Categories</option>
+                                        <option>Milks and Dairies</option>
+                                        <option>Wines & Alcohol</option>
+                                        <option>Clothing & Beauty</option>
+                                        <option>Pet Foods & Toy</option>
+                                        <option>Fast food</option>
+                                        <option>Baking material</option>
+                                        <option>Vegetables</option>
+                                        <option>Fresh Seafood</option>
+                                        <option>Noodles & Rice</option>
+                                        <option>Ice cream</option>
+                                    </select>
+                                    <input type="text" placeholder="Search for items..." name="q" />
+                                    <button class="material-symbols-outlined" type="submit"><span class="material-symbols-outlined">search</span></button>
+    
+                                </form>
+                            </div>
+                            <div class="header-action-right">
+                                <div class="header-action-2">
+                                    
+                                    <!-- <div class="header-action-icon-2">
+                                        <a href="shop-compare.html">
+                                            <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-compare.svg' %}" />
+                                            <span class="pro-count blue ">3</span>
+                                        </a>
+                                        <a href="shop-compare.html"><span class="lable ml-0">Compare</span></a>
+                                    </div> -->
+                                    <div class="header-action-icon-2">
+                                        <a href="{% url 'core:wishlist' %}">
+                                            <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                            {% if request.user.is_authenticated %}
+                                            <span class="pro-count blue">{{ wishlist.count }}</span>
+                                            {% else %}
+                                            <span class="pro-count blue">0</span>
+                                            {% endif %}
+                                        </a>
+                                        <a href="{% url 'core:wishlist' %}"><span class="lable">Wishlist</span></a>
+                                    </div>
+                                    <div class="header-action-icon-2">
+                                        <a class="mini-cart-icon" href="{% url 'core:cart' %}">
+                                            <img alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                            <span class="pro-count blue cart-items-count">{{ request.session.cart_data_obj|length }}</span>
+                                        </a>
+                                        <a href="{% url 'core:cart' %}"><span class="lable">Cart</span></a>
+                                        <div class="cart-dropdown-wrap cart-dropdown-hm2">
+    
+                                            <div class="shopping-cart-footer">
+    
+                                                <div class="shopping-cart-button">
+                                                    <a href="{% url 'core:cart' %}" class="outline">View cart</a>
+                                                    <a href="{% url 'core:checkout' %}">Checkout</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="header-action-icon-2">
-                                    <a href="page-account.html">
-                                        <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
-                                    </a>
-                                    <a href="page-account.html"><span class="lable ml-0">Account</span></a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                                        <ul>
-                                            <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>My Account</a></li>
-                                            <li><a href="http://127.0.0.1:8000/wishlist/"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
-                                            {% if request.user.is_authenticated %}
-                                            <li><a href="{% url 'userauths:sign-out' %}"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a></li>
-                                            {% else %} 
-                                            <li><a href="{% url 'userauths:sign-in' %}"><i class="fi fi-rs-sign-in mr-10"></i>Sign In</a></li>
-                                            {% endif %}
-                                        </ul>
+                                    <div class="header-action-icon-2">
+                                        <a href="{% url 'core:dashboard' %}">
+                                            <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
+                                        </a>
+                                        <a href="{% url 'core:dashboard' %}"><span class="lable ml-0">Account</span></a>
+                                        <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                            <ul>
+                                                <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>My Account</a></li>
+                                                <li><a href="http://127.0.0.1:8000/wishlist/"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
+                                                {% if request.user.is_authenticated %}
+                                                <li><a href="{% url 'userauths:sign-out' %}"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a></li>
+                                                {% else %} 
+                                                <li><a href="{% url 'userauths:sign-in' %}"><i class="fi fi-rs-sign-in mr-10"></i>Sign In</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -220,6 +256,7 @@
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
                         <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.jpg' %}" alt="logo" /></a>
+                        
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
